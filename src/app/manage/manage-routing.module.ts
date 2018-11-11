@@ -3,11 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { ManageComponent } from './manage.component';
 import { SessionComponent } from './session/session.component';
 import { CourseComponent } from './course/course.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { UserComponent } from './user/user.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: ManageComponent
+    component: DashboardComponent,
+
   },
   {
     path: 'session',
@@ -16,7 +19,12 @@ const routes: Routes = [
   {
     path: 'course',
     component: CourseComponent
+  },
+  {
+    path: 'user',
+    component: UserComponent
   }
+
 ];
 
 @NgModule({

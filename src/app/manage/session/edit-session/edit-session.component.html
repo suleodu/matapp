@@ -1,26 +1,35 @@
-<h2 mat-dialog-title>Edit Session {{data.name}}</h2>
+<h2 mat-dialog-title>Edit Session {{data.sesname}}</h2>
 
-<mat-dialog-content>
-    <mat-form-field>
-        <input matInput
-                placeholder="Session Name"
-               formControlName="description">
-    </mat-form-field>
-    <mat-form-field>
-        <mat-select placeholder="Status">
-          <mat-option  [value]="0">
-            Inactive
-          </mat-option>
-          <mat-option  [value]="1">
-              Active
+<form novalidate [formGroup]="updateSessionForm" (ngSubmit)="save()">
+  <mat-dialog-content>
+      <mat-form-field>
+          <input matInput type='text'
+                  placeholder="Session Name"
+                formControlName="sesname">
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput type='number'
+                placeholder="Passmark"
+              formControlName="passmark" >
+      </mat-form-field>
+
+      <mat-form-field>
+          <mat-select placeholder="Status"
+                      formControlName="status"  >
+            <mat-option  [value]="'active'" >
+              Inactive
             </mat-option>
-        </mat-select>
-    </mat-form-field>
-
-
-</mat-dialog-content>
-
-<mat-dialog-actions>
-    <button class="mat-raised-button" mat-dialog-close >Close</button>
-    <button class="mat-raised-button mat-primary" (click)="save()">Save</button>
-</mat-dialog-actions>
+            <mat-option  [value]="'inactive'">
+                Active
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+      <button class="mat-raised-button" mat-dialog-close >Close</button>
+      <button class="mat-raised-button mat-primary"
+              type="submit"
+              [disabled]="!createSessionForm.valid">Save</button>
+  </mat-dialog-actions>
+</form>

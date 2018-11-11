@@ -13,7 +13,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '',
+    redirectTo: 'main2/setup',
     pathMatch: 'full'
   },
   {path: '**', component: PageNotFoundComponent}

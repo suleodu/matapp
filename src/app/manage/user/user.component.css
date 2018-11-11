@@ -1,12 +1,14 @@
 table {
   width: 100%;
-  height: 400px;
+  /*height: 400px;*/
 }
-.session-container {
+
+.user-container {
   overflow-x: scroll;
   overflow-y: scroll;
   height: 400px;
 }
+
 mat-header-row {
   position: sticky;
   top: 0;

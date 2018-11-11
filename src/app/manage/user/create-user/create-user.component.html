@@ -1,0 +1,48 @@
+<h2 mat-dialog-title>Create New User </h2>
+
+<mat-dialog-content>
+  <mat-form-field>
+    <input matInput placeholder="User ID" formControlName="userid">
+  </mat-form-field>
+
+  <mat-form-field>
+      <input matInput placeholder="First Name" formControlName="fname">
+  </mat-form-field>
+
+  <mat-form-field>
+      <input matInput placeholder="Last Name" formControlName="lname">
+  </mat-form-field>
+
+  <mat-form-field>
+      <input matInput placeholder="Middle Name" formControlName="mname">
+  </mat-form-field>
+
+
+  <mat-form-field>
+    <input matInput placeholder="E-Mail" formControlName="email">
+  </mat-form-field>
+
+  <mat-form-field>
+      <input matInput placeholder="User ID" formControlName="csid">
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="Access" formControlName="access">
+      <mat-option [value]="student">Student</mat-option>
+      <mat-option [value]="staff">Staff</mat-option>
+      <mat-option [value]="admin">Admin</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+      <mat-select placeholder="Is Login" formControlName="is_login">
+        <mat-option [value]="1">True</mat-option>
+        <mat-option [value]="0">False</mat-option>
+      </mat-select>
+  </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+  <button class="mat-raised-button"  mat-dialog-close>Close</button>
+  <button class="mat-raised-button mat-primary" (click)="save()">Save</button>
+</mat-dialog-actions>

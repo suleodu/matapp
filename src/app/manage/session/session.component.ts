@@ -2,27 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { CreateSessionComponent } from './create-session/create-session.component';
 import { EditSessionComponent } from './edit-session/edit-session.component';
-
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-  { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-  { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-  { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-  { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' },
-  { position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C' },
-  { position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N' },
-  { position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O' },
-  { position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F' },
-  { position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne' },
-];
+import { SessionService, Session } from '../../model/session/session.service';
+import { MatSnackBar } from '@angular/material';
+import { Observable } from 'rxjs';
+// import 'rxjs/add/observable/of';
+import {DataSource} from '@angular/cdk/collections';
 
 
 @Component({
@@ -34,29 +18,32 @@ const ELEMENT_DATA: PeriodicElement[] = [
 
 export class SessionComponent implements OnInit {
 
-  displayedColumns: string[] = ['position', 'name', 'weight', 'symbol', 'actions'];
-  dataSource = ELEMENT_DATA;
+  dataSource = new SessionDataSource(this.sessionService);
+  displayedColumns: string[] = ['sesname', 'passmark', 'status',  'actions'];
+  sessionData: Session[];
 
-  constructor(public dialog: MatDialog) { }
+  constructor(private sessionService: SessionService, public dialog: MatDialog, public snackBar: MatSnackBar) { }
 
   ngOnInit() {
+    this.load();
   }
 
   openCreateSessionDialog(): void {
     const dialogRef = this.dialog.open(CreateSessionComponent, {
-      width: '300px', height: '300px',
+      width: '250px', height: '340px',
       data: {}
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
+      console.log('The dialog was closed', result);
+      this.load();
     });
   }
 
 
-  openEditSessionDialog(param: PeriodicElement): void {
+  openEditSessionDialog(param: Session): void {
     const dialogRef = this.dialog.open(EditSessionComponent, {
-      width: '300px', height: '300px',
+      width: '250px', height: '330px',
       data: param
     });
 
@@ -66,13 +53,42 @@ export class SessionComponent implements OnInit {
   }
 
 
-  delete(param: PeriodicElement): boolean {
-    if (confirm(`Are you sure you want to delete ${param.name}`)){
+  delete(param: Session): boolean {
+    if (confirm(`Are you sure you want to delete ${param.sesname}`)) {
       return true;
     }
     return false;
   }
 
+
+  private load() {
+    this.sessionService.getAllSession().subscribe(
+      (result: Session[]) => {
+        console.log('success', result);
+        this.sessionData = result;
+        this.snackBar.open('Session Loaded', '', {
+          duration: 2000
+        });
+      },
+      (error: any) => {
+        console.log('error', error);
+        this.snackBar.open(error.message, '', {
+          duration: 2000
+        });
+      }
+    );
+  }
+
 }
 
 
+export class SessionDataSource extends DataSource<Session> {
+
+  constructor(private sessionService: SessionService) {
+    super();
+  }
+  connect(): Observable<Session[]> {
+    return this.sessionService.getAllSession();
+  }
+  disconnect() {}
+}
